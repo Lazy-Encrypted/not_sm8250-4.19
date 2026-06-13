@@ -49,7 +49,7 @@ static struct work_struct input_boost_work;
 
 static bool input_boost_enabled;
 
-static unsigned int input_boost_ms = 150;
+static unsigned int input_boost_ms = 1000;
 show_one(input_boost_ms);
 store_one(input_boost_ms);
 cpu_boost_attr_rw(input_boost_ms);
@@ -211,7 +211,7 @@ static void do_input_boost(struct work_struct *work)
 	cancel_delayed_work_sync(&input_boost_rem);
 	if (sched_boost_active) {
 		sched_set_boost(0);
-		sched_boost_active = false;
+		sched_boost_active = true;
 	}
 
 	/* Set the input_boost_min for all CPUs in the system */
