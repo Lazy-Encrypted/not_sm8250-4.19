@@ -126,7 +126,7 @@
 	{ \
 		int level; \
 		sscanf(buf, "%d", &level); \
-		if (level < 0 || level > 3) { \
+		if (level < 0 || level > 2) { \
 			pr_booster("### Keep this format : greater than 0, and less than 3\n"); \
 			return count; \
 		} \
