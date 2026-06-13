@@ -17,7 +17,7 @@
 /* ===================== CONFIGURAÇÃO ===================== */
 
 /* Duração do boost em ms */
-#define BOOST_DURATION_MS	800
+#define BOOST_DURATION_MS	2000
 
 /* CPU frequencies (KHz) */
 #define LITTLE_BOOST_FREQ	1804800	/* cpu0-3 max */
