@@ -19,13 +19,13 @@
 #define ITAG	" [Input Booster] "
 
 #define pr_booster(format, ...) { }
-#define MAX_MULTI_TOUCH_EVENTS		20
+#define MAX_MULTI_TOUCH_EVENTS		50
 #define MAX_IB_COUNT	100
-#define MAX_EVENTS			(MAX_MULTI_TOUCH_EVENTS * 20)
+#define MAX_EVENTS			(MAX_MULTI_TOUCH_EVENTS * 50)
 #define INPUT_BOOSTER_NULL	-1
 #define INIT_ZERO	0
 #define DEFAULT_LEVEL 0
-#define INPUT_LEVEL 3
+#define INPUT_LEVEL 2
 
 //+++++++++++++++++++++++++++++++++++++++++++++++  STRUCT & VARIABLE FOR SYSFS  +++++++++++++++++++++++++++++++++++++++++++++++//
 #define SYSFS_CLASS(_ATTR_, _ARGU_, _COUNT_) \
