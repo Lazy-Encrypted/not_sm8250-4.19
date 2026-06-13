@@ -25,7 +25,7 @@
 #define PRIME_BOOST_FREQ	2841600	/* cpu7 max */
 
 /* pm_qos CPU latency (microseconds) — menor = mais agressivo */
-#define BOOST_CPU_LATENCY	100
+#define BOOST_CPU_LATENCY	10
 
 /* ======================================================= */
 
