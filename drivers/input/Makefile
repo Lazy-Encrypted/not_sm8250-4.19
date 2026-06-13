@@ -24,6 +24,7 @@ obj-$(CONFIG_INPUT_EVDEV)	+= evdev.o
 obj-$(CONFIG_INPUT_EVBUG)	+= evbug.o
 
 obj-$(CONFIG_ARCH_QCOM)	+= booster_qc.o
+obj-$(CONFIG_ARCH_QCOM) += lazy_input_boost.o
 
 obj-$(CONFIG_INPUT_MOUSE)	+= mouse/
 obj-$(CONFIG_INPUT_JOYSTICK)	+= joystick/
