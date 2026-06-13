@@ -50,7 +50,7 @@ static void set_boost_policy(int type)
 		boost_policy = SCHED_BOOST_ON_BIG;
 		return;
 	}
-
+    boost_policy_dt = SCHED_BOOST_ON_ALL;
 	boost_policy = SCHED_BOOST_ON_ALL;
 }
 
@@ -256,6 +256,15 @@ int sched_set_boost(int type)
 	mutex_unlock(&boost_mutex);
 	return ret;
 }
+
+static int __init sched_boost_default_init(void)
+{
+    mutex_lock(&boost_mutex);
+    _sched_set_boost(FULL_THROTTLE_BOOST);
+    mutex_unlock(&boost_mutex);
+    return 0;
+}
+late_initcall(sched_boost_default_init);
 
 int sched_boost_handler(struct ctl_table *table, int write,
 		void __user *buffer, size_t *lenp,
