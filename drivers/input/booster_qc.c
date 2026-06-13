@@ -96,18 +96,25 @@ void ib_set_booster(int* qos_values)
 		if (value <= 0)
 			continue;
 
-		switch(res_type) {
+		switch (cur_res_idx) {
 		case CPUFREQ:
+			set_freq_limit(DVFS_TOUCH_ID, value);
+			pr_booster("%s :: cpufreq value : %ld", __func__, value);
 			break;
 		case DDRFREQ:
+			ddr_idx = trans_freq_to_idx(value);
+			pr_booster("%s :: bus value : %ld, %u", __func__, value, touch_bus_vectors_bps[ddr_idx].ib);
+			if (register_ddr)
+				rc = icc_set_bw(path_touch_bw,
+						touch_bus_vectors_bps[ddr_idx].ab, touch_bus_vectors_bps[ddr_idx].ib);
 			break;
 		case HMPBOOST:
 			set_hmp(value);
-			pr_booster("ib_set_booster :: hmpboost value : %d", value);
+			pr_booster("%s :: hmpboost value : %ld", __func__, value);
 			break;
 		case LPMBIAS:
 			pm_qos_update_request(&lpm_bias_pm_qos_request, value);
-			pr_booster("ib_set_booster :: lpm bias value : %d", value);
+			pr_booster("%s :: LPM Bias value : %ld", __func__, value);
 			break;
 		default:
 			break;
