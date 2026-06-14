@@ -94,3 +94,53 @@
 &ufshc_mem {
 	hpb-enable = <0>;
 };
+
+&soc {
+	input_booster {
+		compatible = "input_booster";
+		max_resource_count = "4";
+		ib_release_values = "0,0,0,0";
+
+		touch {
+			input_booster,label = "touch";
+			input_booster,type = <2>;
+			input_booster,head_time = <80>;
+			input_booster,tail_time = <650>;
+			resource {
+				compatible = "resource";
+				cpu { resource,label = "cpufreq"; resource,value = <1612800 0>; };
+				ddr { resource,label = "ddrfreq"; resource,value = <1804 0>; };
+				hmp { resource,label = "hmpboost"; resource,value = <1 0>; };
+				lpm { resource,label = "lpmbias"; resource,value = <1 0>; };
+			};
+		};
+
+		multitouch {
+			input_booster,label = "multitouch";
+			input_booster,type = <3>;
+			input_booster,head_time = <80>;
+			input_booster,tail_time = <900>;
+			resource {
+				compatible = "resource";
+				cpu { resource,label = "cpufreq"; resource,value = <1996800 0>; };
+				ddr { resource,label = "ddrfreq"; resource,value = <2736 0>; };
+				hmp { resource,label = "hmpboost"; resource,value = <1 0>; };
+				lpm { resource,label = "lpmbias"; resource,value = <1 0>; };
+			};
+		};
+
+		key {
+			input_booster,label = "key";
+			input_booster,type = <0>;
+			input_booster,head_time = <50>;
+			input_booster,tail_time = <300>;
+			resource {
+				compatible = "resource";
+				cpu { resource,label = "cpufreq"; resource,value = <1190400 0>; };
+				ddr { resource,label = "ddrfreq"; resource,value = <1017 0>; };
+				hmp { resource,label = "hmpboost"; resource,value = <0 0>; };
+				lpm { resource,label = "lpmbias"; resource,value = <0 0>; };
+			};
+		};
+	};
+};
