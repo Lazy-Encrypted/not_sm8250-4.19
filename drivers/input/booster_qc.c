@@ -98,8 +98,13 @@ void ib_set_booster(int* qos_values)
 
 		switch(res_type) {
 		case CPUFREQ:
+			set_freq_limit(DVFS_TOUCH_ID, value);
+			pr_booster("ib_set_booster :: cpufreq value : %d", value);
 			break;
 		case DDRFREQ:
+			ddr_new_value = trans_freq_to_idx(value);
+			pr_booster("ib_set_booster :: ddr_new_value : %d", ddr_new_value);
+			msm_bus_scale_client_update_request(bus_hdl, ddr_new_value);
 			break;
 		case HMPBOOST:
 			set_hmp(value);
@@ -122,6 +127,91 @@ void ib_release_booster(long *rel_flags)
 	int ddr_new_value = 0;
 	int value;
 	int res_type = 0;
+
+	for (res_type = 0; res_type < MAX_RES_COUNT; res_type++) {
+		flag = rel_flags[res_type];
+		if (flag <= 0)
+			continue;
+
+		value = release_value[res_type];
+
+		switch (res_type) {
+		case CPUFREQ:
+			set_freq_limit(DVFS_TOUCH_ID, value);
+			break;
+		case DDRFREQ:
+			ddr_new_value = trans_freq_to_idx(value);
+			msm_bus_scale_client_update_request(bus_hdl, ddr_new_value);
+			break;
+		case HMPBOOST:
+			set_hmp(value);
+			break;
+		case LPMBIAS:
+			pm_qos_update_request(&lpm_bias_pm_qos_request, value);
+			break;
+		default:
+			break;
+		}
+	}
+}
+
+void input_booster_init_vendor(int* release_val)
+{
+	int i = 0;
+
+	pm_qos_add_request(&lpm_bias_pm_qos_request,
+		PM_QOS_BIAS_HYST, PM_QOS_BIAS_HYST_DEFAULT_VALUE);
+
+	fill_bus_vector();
+	for (i = 0; i < touch_reg_bus_scale_table.num_usecases; i++) {
+		touch_reg_bus_usecases[i].num_paths = 1;
+		touch_reg_bus_usecases[i].vectors = &touch_reg_bus_vectors[i];
+	}
+
+	bus_hdl = msm_bus_scale_register_client(&touch_reg_bus_scale_table);
+
+	for (i = 0; i < MAX_RES_COUNT; i++) {
+		release_value[i] = release_val[i];
+	}
+}
+
+void input_booster_exit_vendor(void)
+{
+	//msm_bus_scale_unregister_client(bus_hdl);
+	pm_qos_remove_request(&lpm_bias_pm_qos_request);
+}
+
+#ifndef CONFIG_CPU_FREQ_LIMIT_USERSPACE
+#define DVFS_TOUCH_ID	0
+int set_freq_limit(unsigned long id, unsigned int freq)
+{
+	pr_err("%s is not yet implemented\n", __func__);
+	return 0;
+}
+#endif
+
+#ifdef USE_HMP_BOOST
+void set_hmp(int level)
+{
+	if (level != current_hmp_boost) {
+		if (level == 0) {
+			level = -current_hmp_boost;
+			current_hmp_boost = 0;
+		} else {
+			current_hmp_boost = level;
+		}
+		pr_booster("[Input Booster2] ******      set_hmp : %d ( %s )\n", level, __func__);
+		if (sched_set_boost(level) < 0) {
+			pr_booster("[Input Booster2] ******            !!! fail to HMP !!!\n"); \
+		}
+	}
+}
+#else
+void set_hmp(int level)
+{
+	pr_booster("It does not use hmp\n");
+}
+#endif	int res_type = 0;
 
 	for (res_type = 0; res_type < MAX_RES_COUNT; res_type++) {
 		flag = rel_flags[res_type];
