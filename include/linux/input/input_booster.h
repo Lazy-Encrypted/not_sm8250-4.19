@@ -19,13 +19,13 @@
 #define ITAG	" [Input Booster] "
 
 #define pr_booster(format, ...) { }
-#define MAX_MULTI_TOUCH_EVENTS		10
+#define MAX_MULTI_TOUCH_EVENTS		100
 #define MAX_IB_COUNT	100
-#define MAX_EVENTS			(MAX_MULTI_TOUCH_EVENTS * 10)
+#define MAX_EVENTS			(MAX_MULTI_TOUCH_EVENTS * 100)
 #define INPUT_BOOSTER_NULL	-1
 #define INIT_ZERO	0
 #define DEFAULT_LEVEL 0
-#define INPUT_LEVEL 2
+#define INPUT_LEVEL 3
 
 //+++++++++++++++++++++++++++++++++++++++++++++++  STRUCT & VARIABLE FOR SYSFS  +++++++++++++++++++++++++++++++++++++++++++++++//
 #define SYSFS_CLASS(_ATTR_, _ARGU_, _COUNT_) \
@@ -126,7 +126,7 @@
 	{ \
 		int level; \
 		sscanf(buf, "%d", &level); \
-		if (level < 0 || level > 2) { \
+		if (level < 0 || level > 3) { \
 			pr_booster("### Keep this format : greater than 0, and less than 3\n"); \
 			return count; \
 		} \
